@@ -74,6 +74,7 @@ def threeDegrees():
 </form>
 
     <p>Enter either 1) a term to search or 2) the absolute URL of a Wikipedia page:</p>
+    <i style="position: absolute; bottom: 0px; left: 0px; padding: 5px; text-align: center;">Note: I discovered an error in my code caused by inconsistencies in Wikipedia's pages' layouts. This bug probably did cause some link connections to be missed.</i>
 <form action="/threeDegrees" method="POST">
     <p>
         Term of URL: <input name="userInput" type="text"/>
@@ -178,6 +179,7 @@ def wikipediaGame():
 </style>
 <body>
 <h1>The Wikipedia Game</h1>
+<p>Enter terms for starting and ending pages, then see if you can connect them!</p>
 <form class="back-button" action="/" method="GET">
     <input type="submit" value="Back"/>
 </form>
@@ -229,6 +231,8 @@ def getLinksFromPage(page):
         main_article = obj.find("div", class_="mw-content-ltr mw-parser-output")
         # https://stackoverflow.com/questions/47724241/beautifulsoup-find-all-tags-before-stopping-condition-is-met
         articleReferences = main_article.find("span", class_="mw-headline", id='References')
+        if articleReferences == None:
+            articleReferences = main_article.find("span", class_="mw-headline", id='Citations')
         articleParagraphs = articleReferences.find_all_previous("p", recursive = False)
         links = []
         for para in articleParagraphs:
@@ -424,7 +428,7 @@ def selectLinkFromPage(url):
     links = []
     seenLinks  = {}
     for link in linksRaw:
-        if link[1] not in seenLinks and "File:" not in link[1] and "#" not in link[1]:
+        if link[1] not in seenLinks and "File:" not in link[1] and "#" not in link[1] and "%" not in link[1]:
             seenLinks[link[1]] = 0
             links.append(link)
     links.sort()
@@ -460,6 +464,5 @@ def main():
     global NETWORK, KNOWN_PAGES
     NETWORK, KNOWN_PAGES = createNetwork()
     app.run(debug=True)
-
 if __name__ == '__main__':
     main()
