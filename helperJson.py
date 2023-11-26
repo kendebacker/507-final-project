@@ -1,3 +1,5 @@
+import json
+
 # Code from https://docs.google.com/presentation/d/1BHPzpBnZOtTwObtQpA1rzynxYgsWxvUXG98QSu3v0Z8/edit#slide=id.gf5d8039965_1_13
 def fetchCache(filepath):
     ''' gets saved data
